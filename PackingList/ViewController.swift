@@ -100,6 +100,41 @@ class ViewController: UIViewController {
     
     func showItem(_ index: Int) {
         print("tapped item \(index)")
+        let imageView = UIImageView(image: UIImage(named: "summericons_100px_0\(index).png"))
+        imageView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.5)
+        imageView.layer.cornerRadius = 5.0
+        imageView.layer.masksToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.alpha = 0
+        view.addSubview(imageView)
+        
+        
+        let conX = imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        let conWidth = imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.33, constant: -50.0)
+        let conHeight = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
+        let conBottom = imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: imageView.frame.height)
+        
+        NSLayoutConstraint.activate([conX, conBottom, conWidth, conHeight])
+        
+        view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.8, delay: 0.0,
+                         usingSpringWithDamping:  0.4, initialSpringVelocity: 0.0,
+                         animations: {
+                            conBottom.constant = -imageView.frame.size.height/2
+                            conWidth.constant = 0.0
+                            imageView.alpha = 1
+                            self.view.layoutIfNeeded()
+        },
+                         completion: nil)
+        
+        UIView.animate(withDuration: 0.8, delay: 1, animations: {
+            conBottom.constant = imageView.frame.height
+            conWidth.constant = -50.0
+            imageView.alpha = 0
+            self.view.layoutIfNeeded()
+        }) { completed in
+            imageView.removeFromSuperview()
+        }
     }
 }
 
